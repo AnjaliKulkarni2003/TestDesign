@@ -1,0 +1,70 @@
+  Low Level Design.
+1.	Architecture
+Layered Architecture based on Spring Framework.
+•	Presentation Layer[ Application Controllers]
+•	Business Layer [Service I/F and ServiceImpl]
+•	Persistance Layer [ Repository JPA]
+•	Database layer[ DB]
+
+2.	Modules/ Components
+Inventory Service
+Order Service
+
+These two services needed/ figured out based on Use cases.
+Pattern style: Bounded Context Pattern
+ 
+3.	Microservice communication:
+Use HTTP RestFul API for Internal Microservice communication.
+
+4.	Microservice Discovery using Eureka Service Discovery:
+Use api gw Routing pattern for Service Discovery and Routing.
+
+5.	Functional Requirement
+1.	List Stock
+2.	Add/Modify Delete inventory
+3.	Add/Modify delete supplier of inventory
+4.	Place order
+5.	Cancel Order
+6.	Automatic order initiation based on Threshold qty and Supplier type (local/international)
+
+6.	Non-Functional Requirement
+1.	High Scalability
+2.	High Availability
+3.	Data Isolation
+4.	Independently deployable
+5.	Technology agnostic
+6.	Observability
+7.	Monitoring
+
+7.	Patterns and Principles
+1.	Database per service pattern
+2.	Decompose service by scalability
+3.	Microservice Decomposition pattern:
+-Context pattern
+
+8.	Architecture
+Microservice Atchitecture with Dockerized containers.
+
+
+9.	Architecture Diagram
+Microservice Atchitecture with Dockerized containers.
+
+
+
+
+
+
+
+
+
+
+Functional Flow Explanation:
+Client Side : Android or Web Application used by Owner to Update Parts/ Supplier. It connects over HTTPS to Server via GW
+Serverside:
+Inventory service and Order service are two microservices can be reached by API GW over RESTFUl APIs.
+Order and Inventory Services communication:
+1.	Phase-1 Design: uses Cron job scheduled at every 1 hr for Local Supplier based items and Scheduled at 12am for International supplier
+2.	Phase-1 Design : After every successful order , Inventory is updated by Order Microservice using REST calls, After cancel order the inventory is again updated by Order service to Inventory Service.
+Phase-2 Design: Asynchronous Inventory Update Or Order placement should be done by using RabbitMQ  as enhancement.
+
+ 

@@ -1,0 +1,17 @@
+version: "3"
+services:
+  inventoryservice:
+    image: inventoryservice:1.0.0-SNAPSHOT
+    container_name: inventoryservice
+    environment:
+      SERVER_PORT: "8080"
+      LOGGING_FILE_APPENDER_ENABLE: "true"
+      LOGGING_LEVEL_ROOT: "INFO"
+    ports:
+      - "8080:8080"
+    networks:
+      - demo
+
+networks:
+  demo:
+    external: true

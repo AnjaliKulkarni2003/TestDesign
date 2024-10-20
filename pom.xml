@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.2</version>
+        <relativePath/>
+    </parent>
+	<groupId>com.anjali</groupId>
+	<artifactId>inventory-system</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>inventory-system</name>
+	<description>Demo project </description>
+
+	<properties>
+		<java.version>17</java.version>
+		<jdk.version>17</jdk.version>
+
+		<girders.version>4.10.1</girders.version>
+		<spring-boot.version>2.6.6</spring-boot.version>
+		<nca.project.id>nca-495-9</nca.project.id>
+        <gson-version>2.9.1</gson-version>
+        <gson-fire-version>1.8.3</gson-fire-version>
+        <threetenbp-version>1.4.1</threetenbp-version>
+
+        <docker.image.prefix>inventorysys</docker.image.prefix>
+        <docker.image.name>${project.artifactId}</docker.image.name>
+        <docker.snapshots.repository>github:40121</docker.snapshots.repository>
+        <docker.releases.repository>guthub:40122</docker.releases.repository>
+        <docker.repository>${docker.snapshots.repository}</docker.repository>
+	</properties>
+
+	<modules>
+        <module>orderservice</module>
+        <module>inventoryservice</module>
+        <module>apigw</module>
+        <module>discoveryserver</module>
+    </modules>
+
+
+	<dependencyManagement>
+		<dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+		</dependencies>
+	</dependencyManagement>
+    <profiles>
+        <profile>
+            <id>skip-docker</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <docker.skip>true</docker.skip>
+            </properties>
+        </profile>
+    </profiles>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+				</plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <configuration>
+                        <verbose>true</verbose>
+                        <removeAll>false</removeAll>
+                        <images>
+                            <image>
+                                <alias>${docker.image.prefix}/${docker.image.name}</alias>
+                                <name>${docker.image.prefix}/${docker.image.name}</name>
+                                <registry>${docker.repository}</registry>
+                                <build>
+                                    <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                                    <nocache>true</nocache>
+                                    <cleanup>try</cleanup>
+                                    <tags>
+                                        <tag>${project.version}</tag>
+                                    </tags>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>docker-build</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>docker-push</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>push</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

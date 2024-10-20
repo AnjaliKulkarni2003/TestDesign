@@ -1,0 +1,24 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{xhtml,html,xml}]
+indent_size = 4
+
+[*.{gradle,groovy,kt,kts,java,c}]
+indent_brace_style = java
+spaces_around_operators = true
+spaces_around_brackets = false
+continuation_indent_size = 4
+
+[*.{go}]
+indent_style = tab
+
+[{m,M}akefile]
+indent_style = tab

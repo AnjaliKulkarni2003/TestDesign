@@ -1,0 +1,19 @@
+version: "3"
+services:
+  orderservice:
+    image: orderservice:1.0.0-SNAPSHOT
+    container_name: orderservice
+    environment:
+      SERVER_PORT: "8081"
+      SERVER_SERVLET_SESSION_COOKIE_HTTP_ONLY: "true"
+      SERVER_SERVLET_SESSION_TRACKING_MODES: "cookie"
+      LOGGING_FILE_APPENDER_ENABLE: "true"
+      LOGGING_LEVEL_ROOT: "INFO"
+    ports:
+      - "8081:8081"
+    networks:
+      - demo
+
+networks:
+  demo:
+    external: true
